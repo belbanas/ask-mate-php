@@ -1,0 +1,30 @@
+{
+  "name": "szamitosok/ask-mate",
+  "description": "description",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "daniel",
+      "email": "user@gmail.com"
+    },
+    {
+      "name": "david",
+      "email": "user@gmail.com"
+    },
+    {
+      "name": "wadkan",
+      "email": "user@gmail.com"
+    }
+  ],
+  "require": {
+    "ext-pdo": "*",
+    "jenssegers/blade": "*",
+    "ext-json": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "app\\": "app/"
+    }
+  }
+}
