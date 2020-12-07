@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\models;
 
 
@@ -18,5 +17,13 @@ class Model
         $this->pdo = DBConnection::connectToDatabase();
     }
 
-    // ide jonnek a queryk
+
+    public function list_questions(){
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM question ORDER BY id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll();
+    }
+
 }
