@@ -1,5 +1,7 @@
 @extends('layout')
 
+@section('title', 'Registration')
+
 @section('content')
 
     <div class="container mt-5">
