@@ -34,7 +34,7 @@ class Model
         return $questions;
     }
 
-    function add(User $user): void
+    function add_new_user(User $user): void
     {
         $id = $user->getId();
         $email = $user->getEmail();
@@ -44,10 +44,10 @@ class Model
 
         try {
             $pdo = $this->pdo;
-            $sql = 'INSERT INTO registered_user (id, email, password_hash, registration_time)
+            $sql = 'INSERT INTO registered_user (email, password_hash, registration_time)
                     VALUES (:email, :password_hash, :registration_time)';
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['id' => $id, 'email' => $email, 'password_hash' => $password_hash, 'registration_time' => $registration_time]);
+            $stmt->execute(['email' => $email, 'password_hash' => $password_hash, 'registration_time' => $registration_time]);
 
         } catch (PDOException $e) {
             echo "Error in SQL: " . $e->getMessage();
@@ -66,16 +66,22 @@ class Model
 
         try {
             $pdo = $this->pdo;
-            $sql = 'INSERT INTO registered_user (id, id_image, id_registered_user, title, message, vote_number, submission_time)
-                    VALUES (:id, :id_image, :id_registered_user, :title, :message, :vote_number, :submission_time)';
+            $sql = 'INSERT INTO question (id_image, id_registered_user, title, message, vote_number, submission_time)
+                    VALUES (:idImage, :idRegisteredUser, :title, :message, :voteNumber, :submissionTime)';
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['$id' => $id, '$idImage' => $idImage, '$idRegisteredUser' => $idRegisteredUser, '$title' => $title, '$message' => $message, '$voteNumber' => $voteNumber, '$submissionTime' => $submissionTime]);
+            $stmt->execute(['idImage' => $idImage, 'idRegisteredUser' => $idRegisteredUser, 'title' => $title, 'message' => $message, 'voteNumber' => $voteNumber, 'submissionTime' => $submissionTime]);
 
         } catch (PDOException $e) {
             echo "Error in SQL: " . $e->getMessage();
         }
     }
-
-
-
 }
+
+$con = new Model();
+
+//$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
+//$con->add_new_user($user);
+
+$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
+$con->ask_question($question);
+
