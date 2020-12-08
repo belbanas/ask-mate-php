@@ -6,19 +6,19 @@ namespace app\models;
 
 class User
 {
-    private int $id;
+    private ?int $id;
     private string $email;
     private string $passwordHash;
-    private string $registrationTime;
+    private ?string $registrationTime;
 
     /**
      * User constructor.
-     * @param int $id
+     * @param int|null $id
      * @param string $email
      * @param string $passwordHash
-     * @param string $registrationTime
+     * @param string|null $registrationTime
      */
-    public function __construct(int $id, string $email, string $passwordHash, string $registrationTime)
+    public function __construct(?int $id, string $email, string $passwordHash, ?string $registrationTime)
     {
         $this->id = $id;
         $this->email = $email;
