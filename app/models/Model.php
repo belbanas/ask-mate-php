@@ -54,4 +54,28 @@ class Model
         }
     }
 
+    function ask_question(Question $question): void
+    {
+        $id = $question->getId();
+        $idImage = $question->getIdImage();
+        $idRegisteredUser = $question->getIdRegisteredUser();
+        $title = $question->getTitle();
+        $message = $question->getMessage();
+        $voteNumber = $question->getVoteNumber();
+        $submissionTime = $question->getSubmissionTime();
+
+        try {
+            $pdo = $this->pdo;
+            $sql = 'INSERT INTO registered_user (id, id_image, id_registered_user, title, message, vote_number, submission_time)
+                    VALUES (:id, :id_image, :id_registered_user, :title, :message, :vote_number, :submission_time)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['$id' => $id, '$idImage' => $idImage, '$idRegisteredUser' => $idRegisteredUser, '$title' => $title, '$message' => $message, '$voteNumber' => $voteNumber, '$submissionTime' => $submissionTime]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
+
+
 }
