@@ -76,6 +76,21 @@ class Model
         }
     }
 
+    public function display_a_questions_all_answers(int $question_id)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM question
+                JOIN answer ON question.id = answer.id_question
+                WHERE question.id = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$question_id]);
+        $result = $stmt->fetch();
+
+        var_dump($result);
+//        return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
+//            $result['vote_number'], $result['submission_time']);
+    }
+
     public function display_a_question(int $id)
     {
         $pdo = $this->pdo;
@@ -85,7 +100,7 @@ class Model
         $result = $stmt->fetch();
 
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
-        $result['message'], $result['vote_number'], $result['submission_time']);
+            $result['message'], $result['vote_number'], $result['submission_time']);
         return $question;
     }
 
@@ -99,10 +114,14 @@ $con = new Model();
 //$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
 //$con->ask_question($question);
 
-echo '-----------<br>';
-$stuff = $con->display_a_question(2);
-var_dump($stuff);
+//echo '-----------<br>';
+//$stuff = $con->display_a_question(2);
+//var_dump($stuff);
 
-echo $stuff->getId();
-echo $stuff->getMessage();
-echo '-----------<br>';
+//echo $stuff->getId();
+//echo $stuff->getMessage();
+//echo '-----------<br>';
+
+// error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
+var_dump($con->display_a_question(2));
+var_dump($con->display_a_questions_all_answers(2));
