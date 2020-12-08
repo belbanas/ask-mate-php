@@ -7,7 +7,7 @@ namespace app\models;
 class Question
 {
     private int $id;
-    private int $idImage;
+    private ?int $idImage;
     private int $idRegisteredUser;
     private string $title;
     private string $message;
@@ -24,7 +24,7 @@ class Question
      * @param int $voteNumber
      * @param string $submissionTime
      */
-    public function __construct(int $id, int $idImage, int $idRegisteredUser, string $title, string $message, int $voteNumber, string $submissionTime)
+    public function __construct(int $id, ?int $idImage, int $idRegisteredUser, string $title, string $message, int $voteNumber, string $submissionTime)
     {
         $this->id = $id;
         $this->idImage = $idImage;
@@ -46,7 +46,7 @@ class Question
     /**
      * @return int
      */
-    public function getIdImage(): int
+    public function getIdImage(): ?int
     {
         return $this->idImage;
     }

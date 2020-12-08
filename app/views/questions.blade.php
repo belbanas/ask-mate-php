@@ -19,12 +19,12 @@
             <tbody>
             @foreach ($questions as $question)
                 <tr>
-                    <th scope="row">{{ $record->getId() }}</th>
-                    <td>{{ $record->getTitle() }}</td>
-                    <td>{{ $record->getMessage() }}</td>
-                    <td>{{ $record->getPicture() }}</td>
-                    <td>{{ $record->getVoteNumber() }}</td>
-                    <td>{{ $record->getSubmissionTime() }}</td>
+                    <th scope="row">{{ $question->getId() }}</th>
+                    <td>{{ $question->getTitle() }}</td>
+                    <td>{{ $question->getMessage() }}</td>
+                    <td>{{ $question->getIdImage() }}</td>
+                    <td>{{ $question->getVoteNumber() }}</td>
+                    <td>{{ $question->getSubmissionTime() }}</td>
                 </tr>
             @endforeach
             </tbody>
