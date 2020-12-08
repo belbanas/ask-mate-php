@@ -34,4 +34,24 @@ class Model
         return $questions;
     }
 
+    function add(User $user): void
+    {
+        $id = $user->getId();
+        $email = $user->getEmail();
+        $password_hash = $user->getPasswordHash();
+        $registration_time = $user->getRegistrationTime();
+
+
+        try {
+            $pdo = $this->pdo;
+            $sql = 'INSERT INTO registered_user (id, email, password_hash, registration_time)
+                    VALUES (:email, :password_hash, :registration_time)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['id' => $id, 'email' => $email, 'password_hash' => $password_hash, 'registration_time' => $registration_time]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
 }
