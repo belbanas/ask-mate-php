@@ -75,6 +75,20 @@ class Model
             echo "Error in SQL: " . $e->getMessage();
         }
     }
+
+    public function display_a_question(int $id)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM question WHERE ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$id]);
+        $result = $stmt->fetch();
+
+        $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
+        $result['message'], $result['vote_number'], $result['submission_time']);
+        return $question;
+    }
+
 }
 
 $con = new Model();
@@ -82,6 +96,13 @@ $con = new Model();
 //$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
 //$con->add_new_user($user);
 
-$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
-$con->ask_question($question);
+//$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
+//$con->ask_question($question);
 
+echo '-----------<br>';
+$stuff = $con->display_a_question(2);
+var_dump($stuff);
+
+echo $stuff->getId();
+echo $stuff->getMessage();
+echo '-----------<br>';
