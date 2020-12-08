@@ -1,6 +1,5 @@
 <?php
 
-
 namespace app\models;
 
 
@@ -18,5 +17,21 @@ class Model
         $this->pdo = DBConnection::connectToDatabase();
     }
 
-    // ide jonnek a queryk
+
+    public function list_questions()
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM question ORDER BY id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $questions = array();
+        foreach ($result as $row) {
+            $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
+                $row['message'], $row['vote_number'], $row['submission_time']);
+            array_push($questions, $question);
+        }
+        return $questions;
+    }
+
 }
