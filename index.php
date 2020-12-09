@@ -1,5 +1,6 @@
 <?php
 
+use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Registration;
 use app\models\Model;
@@ -14,7 +15,7 @@ Route::add('/', function () {
     $questions = $model->list_questions();
     $blade = new Blade('./app/views', './cache');
     echo $blade->render('questions', ['questions' => $questions]);
-});
+},'get');
 
 // Simple test route that simulates static html file
 Route::add('/login', function () {
@@ -35,9 +36,8 @@ Route::add('/registration', function () {
 }, 'post');
 
 // Post route example
-Route::add('/contact-form', function () {
-    echo 'Hey! The form has been sent:<br/>';
-    print_r($_POST);
+Route::add('/delete', function () {
+    Delete::deleteAQuestion();
 }, 'post');
 
 // Accept only numbers as parameter. Other characters will result in a 404 error

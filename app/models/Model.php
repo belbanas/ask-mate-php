@@ -4,6 +4,7 @@ namespace app\models;
 
 
 use PDO;
+use PDOException;
 
 class Model
 {
@@ -94,9 +95,9 @@ class Model
     public function display_a_question(int $id)
     {
         $pdo = $this->pdo;
-        $sql = 'SELECT * FROM question WHERE ?';
+        $sql = 'SELECT * FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt->execute(['id'=>$id]);
         $result = $stmt->fetch();
 
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
@@ -104,9 +105,18 @@ class Model
         return $question;
     }
 
+    public function deleteAQuestion(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM question WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+    }
+
 }
 
-$con = new Model();
+//$con = new Model();
+//$con->deleteAQuestion(2);
 
 //$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
 //$con->add_new_user($user);
@@ -123,5 +133,5 @@ $con = new Model();
 //echo '-----------<br>';
 
 // error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
-var_dump($con->display_a_question(2));
-var_dump($con->display_a_questions_all_answers(2));
+//var_dump($con->display_a_question(2));
+//var_dump($con->display_a_questions_all_answers(2));

@@ -30,4 +30,5 @@ class Controller
             echo $this->blade->render('questions', ['questions' => $questions]);
         }
     }
+
 }
