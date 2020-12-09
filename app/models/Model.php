@@ -230,4 +230,24 @@ class Model
         }
     }
 
+
+    public function edit_question($q_id, $new_title, $new_message): void
+    {
+        $old_question = $this->display_a_question($q_id);
+
+        try {
+            $pdo = $this->pdo;
+            $sql = 'UPDATE question
+                    SET title = :new_title, message = :new_message
+                    WHERE id=:q_id';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['new_title' => $new_title, 'new_message' => $new_message, 'q_id' => $q_id]);
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
 }
+
+$model = new Model();
+$conn = $model->edit_question(2,'edited','message edited');
