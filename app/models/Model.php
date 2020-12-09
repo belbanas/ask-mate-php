@@ -132,4 +132,16 @@ class Model
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
+
+    public function saveImage(Image $image)
+    {
+        $directory = $image->getDirectory();
+        $fileName = $image->getFileName();
+
+        $pdo = $this->pdo;
+        $sql = 'INSERT INTO image (directory, file_name)
+                VALUES (:directory, :fileName)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['directory' => $directory, 'fileName' => $fileName]);
+    }
 }

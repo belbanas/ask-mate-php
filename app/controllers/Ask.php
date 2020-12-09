@@ -27,7 +27,11 @@ class Ask
         $message = $_POST['message'];
         $question = new Question(null, $idImage, $idRegisteredUser, $title, $message, 0, null);
         $model->ask_question($question);
-        Image::saveImage();
+        if (isset($_FILES['image'])) {
+            $image = new Image($_FILES['image']['name']);
+            $model->saveImage($image);
+            $image->saveImage();
+        }
 
 //        header('Location:/');
     }

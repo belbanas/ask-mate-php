@@ -6,9 +6,24 @@ namespace app\models;
 
 class Image
 {
-    public static function saveImage()
+    private ?int $id;
+    private string $directory;
+    private string $filename;
+    private ?string $uploadTime;
+
+    /**
+     * Image constructor.
+     * @param string $filename
+     */
+    public function __construct(string $filename)
     {
-        $target_dir = "uploads/";
+        $this->directory = "uploads/";
+        $this->filename = $filename;
+    }
+
+    public function saveImage()
+    {
+        $target_dir = $this->directory;
         $target_file = $target_dir . basename($_FILES["image"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -56,4 +71,38 @@ class Image
             }
         }
     }
+
+    /**
+     * @return int|null
+     */
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDirectory(): string
+    {
+        return $this->directory;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFilename(): string
+    {
+        return $this->filename;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getUploadTime(): ?string
+    {
+        return $this->uploadTime;
+    }
+
+
 }
