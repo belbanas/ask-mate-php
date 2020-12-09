@@ -16,7 +16,7 @@
             </thead>
             <tbody>
             <tr>
-                <form action='/edit_qustion_handler' method='POST' id='decrease-{{$question->getId()}}'>
+                <form action='/edit_question_handler' method='POST'>
                     <input type='hidden' name='id' value='{{$question->getId()}}'/>
                     <th scope="row">{{ $question->getId() }}</th>
                     <td>
