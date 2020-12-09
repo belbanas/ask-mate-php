@@ -14,18 +14,20 @@
             <div class="col-sm">
             </div>
             <div class="col-sm">
-                <form>
+                <form action="/login" method="post">
                     <div class="mb-3">
-                        <label for="username" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="username" placeholder="Enter your email">
+                        <label for="email" class="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email"
+                               required>
                     </div>
                     <div class="mb-3">
                         <label for="exampleInputPassword1" class="form-label">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter your password">
+                        <input name="password" type="password" class="form-control" id="exampleInputPassword1"
+                               placeholder="Enter your password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Sign in</button>
                     <p></p>
-                    <div class="form-text">If you are not registered click <a href="#">here</a>.</div>
+                    <div class="form-text">If you are not registered click <a href="/registration">here</a>.</div>
                 </form>
             </div>
             <div class="col-sm">

@@ -37,18 +37,15 @@ class Model
 
     function add_new_user(User $user): void
     {
-        $id = $user->getId();
         $email = $user->getEmail();
         $password_hash = $user->getPasswordHash();
-        $registration_time = $user->getRegistrationTime();
-
 
         try {
             $pdo = $this->pdo;
-            $sql = 'INSERT INTO registered_user (email, password_hash, registration_time)
-                    VALUES (:email, :password_hash, :registration_time)';
+            $sql = 'INSERT INTO registered_user (email, password_hash)
+                    VALUES (:email, :password_hash)';
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['email' => $email, 'password_hash' => $password_hash, 'registration_time' => $registration_time]);
+            $stmt->execute(['email' => $email, 'password_hash' => $password_hash]);
 
         } catch (PDOException $e) {
             echo "Error in SQL: " . $e->getMessage();
@@ -87,7 +84,6 @@ class Model
         $stmt->execute([$question_id]);
         $result = $stmt->fetch();
 
-//        var_dump($result);
         return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
             $result['vote_number'], $result['submission_time']);
     }
@@ -105,10 +101,35 @@ class Model
         return $question;
     }
 
+    public function getUserByEmail(string $email): ?User
+    {
+        $sql = 'SELECT * FROM registered_user WHERE email=:email';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch();
+        return new User($result['id'], $result['email'], $result['password_hash'], $result['registration_time']);
+    }
+
     public function deleteAQuestion(int $id): void
     {
         $pdo = $this->pdo;
         $sql = 'DELETE FROM question WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function increaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number + 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function decreaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number - 1 WHERE id=:id';
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
     }
@@ -210,58 +231,3 @@ class Model
     }
 
 }
-
-
-$con = new Model();
-
-// EXAMPLE FOR DISPLAY QUESTIONS BY TAG_NAME
-//$t = $con->display_all_questions_by_tags_name('test');
-//$g = $t[0];
-//echo $g->getMessage();
-
-//$con->deleteAQuestion(2);
-
-//$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
-//$con->add_new_user($user);
-
-//EXAMPLE FOR ASK QUESTION
-//$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
-//$con->ask_question($question);
-
-//echo '-----------<br>';
-//$stuff = $con->display_a_question(2);
-//var_dump($stuff);
-
-//echo $stuff->getId();
-//echo $stuff->getMessage();
-//echo '-----------<br>';
-
-// error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
-//var_dump($con->display_a_question(2));
-//var_dump($con->display_a_questions_all_answers(2));
-
-// EXAMPLE FOR DISPLAY ALL TAGS
-//$tags = $con->display_all_tags();
-//var_dump($tags);
-//foreach ($tags as $tag) {
-//    foreach ($tag as $item) {
-//        echo $item.'<br>';
-//    }
-//}
-
-// EXAMPLE FOR DISPLAY QUESTIONS BY TAG_NAME
-//$t = new Tag(1, 'hi!');
-//$q = new Question(2, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
-
-// EXAMPLE FOR check_if_tag_exists_on_a_question
-//$tag_id = 1;
-//$question_id = 3;
-//$res = $con->check_if_tag_exists_on_a_question($tag_id, $question_id);
-//var_dump($res);
-
-
-// EXAMPLE for
-//$t = new Tag(1, 'hi!');
-//$q = new Question(7, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
-
-//$con->add_tag_to_question($t, $q);
