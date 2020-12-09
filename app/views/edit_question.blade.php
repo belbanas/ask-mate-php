@@ -21,13 +21,12 @@
                     <th scope="row">{{ $question->getId() }}</th>
                     <td>
                         <label for="title"></label>
-                        <input type="text" value="{{ $question->getTitle() }}" name="title" id="title">
+                        <input type="text" value="{{ $question->getTitle() }}" name="title" id="title" required>
                     </td>
                     <td>
                         <label for="message"></label>
-                        <input type="text" value="{{ $question->getMessage() }}" name="message" id="message">
+                        <input type="text" value="{{ $question->getMessage() }}" name="message" id="message" required>
                     </td>
-                    <td>{{ $question->getMessage() }}</td>
                     <td><input type="submit" value="Send Request"></td>
                 </form>
             </tr>

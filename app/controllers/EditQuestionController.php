@@ -20,9 +20,9 @@ class EditQuestionController
     public static function editQuestionHandler($q_id, $title, $message)
     {
         $model = new Model();
-        $question = $model->edit_question($q_id, $title, $message);
+        $model->edit_question($q_id, $title, $message);
 
-        $model = new Model();
+//        TODO: redirect here please!
         $questions = $model->list_questions();
         $blade = new Blade('./app/views', './cache');
         echo $blade->render('questions', ['questions' => $questions]);
