@@ -77,7 +77,7 @@ class Model
         }
     }
 
-    public function display_a_questions_all_answers(int $question_id)
+    public function display_a_questions_all_answers(int $question_id): Answer
     {
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question
@@ -87,12 +87,12 @@ class Model
         $stmt->execute([$question_id]);
         $result = $stmt->fetch();
 
-        var_dump($result);
-//        return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
-//            $result['vote_number'], $result['submission_time']);
+//        var_dump($result);
+        return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
+            $result['vote_number'], $result['submission_time']);
     }
 
-    public function display_a_question(int $id)
+    public function display_a_question(int $id): Question
     {
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question WHERE id=:id';
@@ -113,9 +113,36 @@ class Model
         $stmt->execute(['id'=>$id]);
     }
 
+
+
+
+    public function display_all_questions_by_tags_name(string $tag_name)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM question
+                  JOIN rel_question_tag ON question.id = rel_question_tag.id_question
+                  JOIN tag ON rel_question_tag.id_tag = tag.id
+                  WHERE tag.name = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$tag_name]);
+        $result = $stmt->fetchAll();
+        $questions = array();
+        foreach ($result as $row) {
+            $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
+                $row['message'], $row['vote_number'], $row['submission_time']);
+            array_push($questions, $question);
+        }
+        return $questions;
+    }
+
 }
 
-//$con = new Model();
+
+$con = new Model();
+$t = $con->display_all_questions_by_tags_name('test');
+$g = $t[0];
+echo $g->getMessage();
+
 //$con->deleteAQuestion(2);
 
 //$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
