@@ -1,13 +1,12 @@
 <?php
 session_start();
 
+use app\controllers\Ask;
 use app\controllers\Controller;
 use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Registration;
 use app\controllers\Vote;
-use app\models\Model;
-use Jenssegers\Blade\Blade;
 use app\controllers\Route;
 
 require_once __DIR__ . '/vendor/autoload.php';
@@ -47,6 +46,10 @@ Route::add('/decrease', function () {
 
 Route::add('/logout', function () {
     Login::logoutUser();
+});
+
+Route::add('/ask', function () {
+    Ask::renderAskQuestion();
 });
 
 Route::run('/');
