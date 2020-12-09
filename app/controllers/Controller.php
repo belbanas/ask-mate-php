@@ -16,4 +16,5 @@ class Controller
         $blade = new Blade('./app/views', './cache');
         echo $blade->render('questions', ['questions' => $questions]);
     }
+
 }

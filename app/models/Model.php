@@ -92,9 +92,9 @@ class Model
     public function display_a_question(int $id)
     {
         $pdo = $this->pdo;
-        $sql = 'SELECT * FROM question WHERE ?';
+        $sql = 'SELECT * FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute([$id]);
+        $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
 
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
@@ -111,24 +111,27 @@ class Model
         return new User($result['id'], $result['email'], $result['password_hash'], $result['registration_time']);
     }
 
+    public function deleteAQuestion(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM question WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function increaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number + 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function decreaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number - 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
 }
-
-//$con = new Model();
-//
-//$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
-//$con->add_new_user($user);
-
-//$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
-//$con->ask_question($question);
-
-//echo '-----------<br>';
-//$stuff = $con->display_a_question(2);
-//var_dump($stuff);
-
-//echo $stuff->getId();
-//echo $stuff->getMessage();
-//echo '-----------<br>';
-
-// error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
-//var_dump($con->display_a_question(2));
-//var_dump($con->display_a_questions_all_answers(2));
