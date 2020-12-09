@@ -113,6 +113,22 @@ class Model
         $stmt->execute(['id'=>$id]);
     }
 
+    public function increaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number + 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function decreaseVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE question SET vote_number = vote_number - 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
 }
 
 //$con = new Model();
