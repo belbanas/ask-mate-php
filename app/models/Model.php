@@ -177,11 +177,29 @@ class Model
         $if_not_exist = $this->check_if_tag_exists_on_a_question($t_id, $q_id);
 
         if (!$if_not_exist) {
-            echo 'in!';
+//            TAG QUESTION
             try {
                 $pdo = $this->pdo;
                 $sql = 'INSERT INTO rel_question_tag (id_question, id_tag)
                     VALUES (:q_id, :t_id)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
+
+            } catch (PDOException $e) {
+                echo "Error in SQL: " . $e->getMessage();
+            }
+        } else {
+//             DETAG THE QUESTION
+            try {
+//                $pdo = $this->pdo;
+//                $sql = 'DELETE FROM tag
+//                    WHERE id = :t_id';
+//                $stmt = $pdo->prepare($sql);
+//                $stmt->execute(['t_id' => $t_id]);
+
+                $pdo = $this->pdo;
+                $sql = 'DELETE FROM rel_question_tag
+                    WHERE id_question = :q_id AND id_tag = :t_id';
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
 
@@ -243,7 +261,7 @@ $con = new Model();
 
 
 // EXAMPLE for
-$t = new Tag(1, 'hi!');
-$q = new Question(111, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
+//$t = new Tag(1, 'hi!');
+//$q = new Question(7, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
 
-$con->add_tag_to_question($t, $q);
+//$con->add_tag_to_question($t, $q);
