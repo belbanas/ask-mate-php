@@ -3,6 +3,7 @@
 use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Registration;
+use app\controllers\Vote;
 use app\models\Model;
 use Jenssegers\Blade\Blade;
 use app\controllers\Route;
@@ -39,6 +40,15 @@ Route::add('/registration', function () {
 Route::add('/delete', function () {
     Delete::deleteAQuestion();
 }, 'post');
+
+Route::add('/increase', function () {
+    Vote::increaseVote();
+}, 'post');
+
+Route::add('/decrease', function () {
+    Vote::decreaseVote();
+}, 'post');
+
 
 // Accept only numbers as parameter. Other characters will result in a 404 error
 Route::add('/foo/([0-9]*)/bar', function ($var1) {
