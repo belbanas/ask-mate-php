@@ -49,5 +49,15 @@ Route::add('/logout', function () {
     Login::logoutUser();
 });
 
+Route::add('/edit_question_form', function () {
+    $q_id = $_GET["q_id"];
+    Controller::renderEditQuestionForm($q_id);
+});
+
+Route::add('/edit_qustion_handler', function () {
+    $q_id = $_GET["q_id"];
+    Controller::editQuestionHandler($q_id);
+});
+
 Route::run('/');
 

@@ -14,6 +14,7 @@
                 <th scope="col">Picture</th>
                 <th scope="col">Vote number</th>
                 <th scope="col">Submission Time</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
@@ -48,6 +49,7 @@
                         </form>
                     </td>
                     <td>{{ $question->getSubmissionTime() }}</td>
+                    <td><a href="/edit_question_form?q_id={{ $question->getId() }}">Edit question</a></td>
                     <td>
                         <form action='/delete' method='POST' id='delete-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='delete'/>

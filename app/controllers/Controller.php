@@ -17,4 +17,20 @@ class Controller
         echo $blade->render('questions', ['questions' => $questions]);
     }
 
+    public static function renderEditQuestionForm($q_id)
+    {
+        $model = new Model();
+        $question = $model->display_a_question($q_id);
+        $blade = new Blade('./app/views', './cache');
+        echo $blade->render('edit_question', ['question' => $question]);
+    }
+
+    public static function editQuestionHandler($q_id)
+    {
+        $model = new Model();
+        $question = $model->display_a_question($q_id);
+        $blade = new Blade('./app/views', './cache');
+        echo $blade->render('eidtQuestionForm', ['questions' => $question]);
+    }
+
 }
