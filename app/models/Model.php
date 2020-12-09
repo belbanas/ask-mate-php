@@ -97,7 +97,7 @@ class Model
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id'=>$id]);
+        $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
 
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
@@ -110,10 +110,23 @@ class Model
         $pdo = $this->pdo;
         $sql = 'DELETE FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id'=>$id]);
+        $stmt->execute(['id' => $id]);
     }
 
 
+    public function display_all_tags()
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM tag';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $tags = array();
+        foreach ($result as $item) {
+            array_push($tags, $item);
+        }
+        return $tags;
+    }
 
 
     public function display_all_questions_by_tags_name(string $tag_name)
@@ -135,19 +148,65 @@ class Model
         return $questions;
     }
 
+
+    public function check_if_tag_exists_on_a_question(int $tag_id, int $question_id)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM rel_question_tag 
+                WHERE id_question = ? AND id_tag = ?
+                LIMIT 1';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$question_id, $tag_id]);
+        return $stmt->fetch() == null ? false : true;
+    }
+
+
+    function add_tag_to_question(Tag $tag, Question $question): void
+    {
+        $t_id = $tag->getId();
+        $tag_name = $tag->getName();
+
+        $q_id = $question->getId();
+        $idImage = $question->getIdImage();
+        $idRegisteredUser = $question->getIdRegisteredUser();
+        $title = $question->getTitle();
+        $message = $question->getMessage();
+        $voteNumber = $question->getVoteNumber();
+        $submissionTime = $question->getSubmissionTime();
+
+        $if_not_exist = $this->check_if_tag_exists_on_a_question($t_id, $q_id);
+
+        if (!$if_not_exist) {
+            echo 'in!';
+            try {
+                $pdo = $this->pdo;
+                $sql = 'INSERT INTO rel_question_tag (id_question, id_tag)
+                    VALUES (:q_id, :t_id)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
+
+            } catch (PDOException $e) {
+                echo "Error in SQL: " . $e->getMessage();
+            }
+        }
+    }
+
 }
 
 
 $con = new Model();
-$t = $con->display_all_questions_by_tags_name('test');
-$g = $t[0];
-echo $g->getMessage();
+
+// EXAMPLE FOR DISPLAY QUESTIONS BY TAG_NAME
+//$t = $con->display_all_questions_by_tags_name('test');
+//$g = $t[0];
+//echo $g->getMessage();
 
 //$con->deleteAQuestion(2);
 
 //$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
 //$con->add_new_user($user);
 
+//EXAMPLE FOR ASK QUESTION
 //$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
 //$con->ask_question($question);
 
@@ -162,3 +221,29 @@ echo $g->getMessage();
 // error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
 //var_dump($con->display_a_question(2));
 //var_dump($con->display_a_questions_all_answers(2));
+
+// EXAMPLE FOR DISPLAY ALL TAGS
+//$tags = $con->display_all_tags();
+//var_dump($tags);
+//foreach ($tags as $tag) {
+//    foreach ($tag as $item) {
+//        echo $item.'<br>';
+//    }
+//}
+
+// EXAMPLE FOR DISPLAY QUESTIONS BY TAG_NAME
+//$t = new Tag(1, 'hi!');
+//$q = new Question(2, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
+
+// EXAMPLE FOR check_if_tag_exists_on_a_question
+//$tag_id = 1;
+//$question_id = 3;
+//$res = $con->check_if_tag_exists_on_a_question($tag_id, $question_id);
+//var_dump($res);
+
+
+// EXAMPLE for
+$t = new Tag(1, 'hi!');
+$q = new Question(111, null, 1, 'new_tagger', 'working', 1, '2020-01-01 11:11:11');
+
+$con->add_tag_to_question($t, $q);
