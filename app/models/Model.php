@@ -102,10 +102,19 @@ class Model
         return $question;
     }
 
+    public function getUserByEmail(string $email): ?User
+    {
+        $sql = 'SELECT * FROM registered_user WHERE email=:email';
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->execute(['email' => $email]);
+        $result = $stmt->fetch();
+        return new User($result['id'], $result['email'], $result['password_hash'], $result['registration_time']);
+    }
+
 }
 
 //$con = new Model();
-
+//
 //$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
 //$con->add_new_user($user);
 
