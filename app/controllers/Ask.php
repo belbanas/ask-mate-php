@@ -4,6 +4,7 @@
 namespace app\controllers;
 
 
+use app\models\Image;
 use app\models\Model;
 use app\models\Question;
 use Jenssegers\Blade\Blade;
@@ -26,6 +27,8 @@ class Ask
         $message = $_POST['message'];
         $question = new Question(null, $idImage, $idRegisteredUser, $title, $message, 0, null);
         $model->ask_question($question);
-        header('Location:/');
+        Image::saveImage();
+
+//        header('Location:/');
     }
 }
