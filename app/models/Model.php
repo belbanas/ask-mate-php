@@ -85,11 +85,14 @@ class Model
                 WHERE question.id = ?';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$question_id]);
-        $result = $stmt->fetch();
-
-        var_dump($result);
-//        return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
-//            $result['vote_number'], $result['submission_time']);
+        $results = $stmt->fetchAll();
+        $answers = array();
+        foreach ($results as $result) {
+            $answer = new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
+                $result['vote_number'], $result['submission_time']);
+            array_push($answers, $answer);
+        }
+        return $answers;
     }
 
     public function display_a_question(int $id)
@@ -97,7 +100,7 @@ class Model
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id'=>$id]);
+        $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
 
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
@@ -110,7 +113,15 @@ class Model
         $pdo = $this->pdo;
         $sql = 'DELETE FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
-        $stmt->execute(['id'=>$id]);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function deleteAnAnswer(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM answer WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
     }
 
     public function increaseVote(int $id): void
@@ -129,25 +140,32 @@ class Model
         $stmt->execute(['id' => $id]);
     }
 
+    public function increaseAnswerVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE answer SET vote_number = vote_number + 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function decreaseAnswerVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE answer SET vote_number = vote_number - 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function getAnswerById(int $id): Answer
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM answer WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch();
+        return new Answer ($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'], $result['vote_number'], $result['submission_time']);
+    }
+
 }
 
-//$con = new Model();
-//$con->deleteAQuestion(2);
 
-//$user = new User(12,'wad@wad.hu','asdf', '2020-10-10 10:10:10');
-//$con->add_new_user($user);
-
-//$question = new Question(100,1,10,'Szevasz,','hello',2,'2020-10-10 12:12:12');
-//$con->ask_question($question);
-
-//echo '-----------<br>';
-//$stuff = $con->display_a_question(2);
-//var_dump($stuff);
-
-//echo $stuff->getId();
-//echo $stuff->getMessage();
-//echo '-----------<br>';
-
-// error messag when add an answer: Cannot add or update a child row: a foreign key constraint fails (`ask_mate_again`.`answer`, CONSTRAINT `fk_question_on_answer` FOREIGN KEY (`id_question`) REFERENCES `question` (`id`))
-//var_dump($con->display_a_question(2));
-//var_dump($con->display_a_questions_all_answers(2));
