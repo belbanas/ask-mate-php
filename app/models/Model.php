@@ -54,20 +54,18 @@ class Model
 
     function ask_question(Question $question): void
     {
-        $id = $question->getId();
         $idImage = $question->getIdImage();
         $idRegisteredUser = $question->getIdRegisteredUser();
         $title = $question->getTitle();
         $message = $question->getMessage();
         $voteNumber = $question->getVoteNumber();
-        $submissionTime = $question->getSubmissionTime();
 
         try {
             $pdo = $this->pdo;
-            $sql = 'INSERT INTO question (id_image, id_registered_user, title, message, vote_number, submission_time)
-                    VALUES (:idImage, :idRegisteredUser, :title, :message, :voteNumber, :submissionTime)';
+            $sql = 'INSERT INTO question (id_image, id_registered_user, title, message, vote_number)
+                    VALUES (:idImage, :idRegisteredUser, :title, :message, :voteNumber)';
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['idImage' => $idImage, 'idRegisteredUser' => $idRegisteredUser, 'title' => $title, 'message' => $message, 'voteNumber' => $voteNumber, 'submissionTime' => $submissionTime]);
+            $stmt->execute(['idImage' => $idImage, 'idRegisteredUser' => $idRegisteredUser, 'title' => $title, 'message' => $message, 'voteNumber' => $voteNumber]);
 
         } catch (PDOException $e) {
             echo "Error in SQL: " . $e->getMessage();

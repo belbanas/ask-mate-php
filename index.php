@@ -50,7 +50,11 @@ Route::add('/logout', function () {
 
 Route::add('/ask', function () {
     Ask::renderAskQuestion();
-});
+}, 'get');
+
+Route::add('/ask', function () {
+    Ask::askQuestion();
+}, 'post');
 
 Route::run('/');
 

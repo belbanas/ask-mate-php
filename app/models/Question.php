@@ -6,25 +6,25 @@ namespace app\models;
 
 class Question
 {
-    private int $id;
+    private ?int $id;
     private ?int $idImage;
     private int $idRegisteredUser;
     private string $title;
     private string $message;
     private int $voteNumber;
-    private string $submissionTime;
+    private ?string $submissionTime;
 
     /**
      * Question constructor.
-     * @param int $id
-     * @param int $idImage
+     * @param int|null $id
+     * @param int|null $idImage
      * @param int $idRegisteredUser
      * @param string $title
      * @param string $message
      * @param int $voteNumber
-     * @param string $submissionTime
+     * @param string|null $submissionTime
      */
-    public function __construct(int $id, ?int $idImage, int $idRegisteredUser, string $title, string $message, int $voteNumber, string $submissionTime)
+    public function __construct(?int $id, ?int $idImage, int $idRegisteredUser, string $title, string $message, int $voteNumber, ?string $submissionTime)
     {
         $this->id = $id;
         $this->idImage = $idImage;
@@ -38,7 +38,7 @@ class Question
     /**
      * @return int
      */
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -86,7 +86,7 @@ class Question
     /**
      * @return string
      */
-    public function getSubmissionTime(): string
+    public function getSubmissionTime(): ?string
     {
         return $this->submissionTime;
     }
