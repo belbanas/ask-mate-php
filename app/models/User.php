@@ -8,7 +8,7 @@ class User
 {
     private ?int $id;
     private string $email;
-    private string $passwordHash;
+    private ?string $passwordHash;
     private ?string $registrationTime;
 
     /**
@@ -18,7 +18,7 @@ class User
      * @param string $passwordHash
      * @param string|null $registrationTime
      */
-    public function __construct(?int $id, string $email, string $passwordHash, ?string $registrationTime)
+    public function __construct(?int $id, string $email, ?string $passwordHash, ?string $registrationTime)
     {
         $this->id = $id;
         $this->email = $email;

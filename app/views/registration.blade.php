@@ -14,7 +14,7 @@
             <div class="col-sm">
             </div>
             <div class="col-sm">
-                <form action="#" method="post">
+                <form action="/registration" method="post">
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
                         <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email"

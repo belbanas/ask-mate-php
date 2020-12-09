@@ -22,7 +22,7 @@ class Registration
         $passwordHash = password_hash($_POST['password'], PASSWORD_DEFAULT);
         $user = new User(null, $email, $passwordHash, null);
         $model = new Model();
-        // TODO: mode function name
+        $model->add_new_user($user);
         header('Location:/');
     }
 
