@@ -24,5 +24,26 @@ class Vote
         header('Location:/');
     }
 
+    public static function increaseAnswerVote(): void
+    {
+        $answerID = $_POST['id'];
+        $model = new Model();
+        $model->increaseAnswerVote($answerID);
+        $answer = $model->getAnswerById($answerID);
+        $questionID = $answer->getIdQuestion();
+        header('Location:/question?id='. $questionID);
+    }
+
+    public static function decreaseAnswerVote(): void
+    {
+        $answerID = $_POST['id'];
+        $model = new Model();
+        $model->decreaseAnswerVote($answerID);
+        $answer = $model->getAnswerById($answerID);
+        $questionID = $answer->getIdQuestion();
+        header('Location:/question?id='. $questionID);
+    }
+
+
 
 }
