@@ -19,7 +19,7 @@ class Answer
      * @param int $id_question
      * @param int $id_registered_user
      * @param string $message
-     * @param string $vote_number
+     * @param int $vote_number
      * @param string $submission_time
      */
     public function __construct(int $id, int $id_question, int $id_registered_user, string $message, int $vote_number, string $submission_time)

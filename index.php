@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+use app\controllers\AddAnswer;
 use app\controllers\Ask;
 use app\controllers\Controller;
 use app\controllers\EditQuestionController;
@@ -11,6 +12,7 @@ use app\controllers\Registration;
 use app\controllers\Users;
 use app\controllers\Vote;
 use app\controllers\Route;
+use app\models\Answer;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
@@ -82,6 +84,14 @@ Route::add('/ask', function () {
 
 Route::add('/ask', function () {
     Ask::askQuestion();
+}, 'post');
+
+Route::add('/add-answer', function () {
+    AddAnswer::renderAddAnswer();
+}, 'get');
+
+Route::add('/add-answer', function () {
+    AddAnswer::saveAnswer();
 }, 'post');
 
 Route::add('/users', function (){

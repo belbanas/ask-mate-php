@@ -3,10 +3,10 @@
 @section('title', 'Question')
 
 @section('content')
+
     @component('navbar')
 
     @endcomponent
-
 
     <div class="container mt-5">
         <table class="table table-striped">
@@ -31,9 +31,7 @@
             @endforeach
             </tbody>
         </table>
-        <a href="/">
-            <button type="button" class="btn btn-primary">Back</button>
-        </a>
+        <a href="/"><button type="button" class="btn btn-primary">Back</button></a>
     </div>
 
 @endsection
