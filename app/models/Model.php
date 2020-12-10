@@ -74,7 +74,7 @@ class Model
         }
     }
 
-    public function display_a_questions_all_answers(int $question_id): Answer
+    public function display_a_questions_all_answers(int $question_id): array
     {
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question
