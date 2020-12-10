@@ -18,7 +18,7 @@ class TagController
         $model = new Model();
         $model->add_tag_to_question($tagName, $q_id);
 
-        header('Location:/');
+        header('Location:/question?id='.$q_id);
     }
 
     public static function deTag(): void
@@ -31,7 +31,7 @@ class TagController
         $model = new Model();
         $model->detagQuestion($q_id, $t_id);
 
-        header('Location:/');
+        header('Location:/question?id='.$q_id);
     }
 
 

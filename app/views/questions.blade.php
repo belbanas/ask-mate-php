@@ -19,7 +19,6 @@
                 <th scope="col">Vote number</th>
                 <th scope="col">Submission Time</th>
                 <th scope="col">Edit</th>
-                <th scope="col">Tags</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
@@ -59,43 +58,6 @@
                     </td>
                     <td>{{ $question->getSubmissionTime() }}</td>
                     <td><a href="/edit_question_form?q_id={{ $question->getId() }}">Edit question</a></td>
-                    <td>
-                        <form action='/tagQuestion' method='POST' id='tag-{{$question->getId()}}'>
-                            {{--                            <input type='hidden' name='action' value='tag'/>--}}
-                            <input type='hidden' name='q_id' value='{{$question->getId()}}'/>
-                            <input type="text" id="tagName" name="tagName">
-                            <a href=""
-                               onclick="document.getElementById('tag-{{$question->getId()}}').submit(); return false;">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                     fill="none" stroke="#000000" stroke-width="2" stroke-linecap="round"
-                                     stroke-linejoin="round">
-                                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>
-                                    <line x1="7" y1="7" x2="7.01" y2="7"></line>
-                                </svg>
-                            </a>
-                        </form>
-                        <ul>
-                            @foreach ($question->getTags() as $tag )
-                                <li>
-                                    <form action='/deTag' method='POST' id='deTag-{{$tag['name']}}'>
-                                        {{$tag['name']}}
-                                        <input type='hidden' name='action' value='deTag'/>
-                                        <input type='hidden' name='q_id' value='{{$question->getId()}}'/>
-                                        <input type='hidden' name='t_id' value='{{$tag['id']}}'/>
-                                        <a href=""
-                                           onclick="document.getElementById('deTag-{{$tag['name']}}').submit(); return false;">
-                                            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
-                                                 fill="currentColor"
-                                                 xmlns="http://www.w3.org/2000/svg">
-                                                <path fill-rule="evenodd"
-                                                      d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5a.5.5 0 0 0-1 0v7a.5.5 0 0 0 1 0v-7z"/>
-                                            </svg>
-                                        </a>
-                                    </form>
-                                </li>
-                            @endforeach
-                        </ul>
-                    </td>
                     <td>
                         <form action='/delete' method='POST' id='delete-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='delete'/>

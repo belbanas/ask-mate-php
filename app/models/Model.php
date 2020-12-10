@@ -99,8 +99,10 @@ class Model
         $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
 
+        $tags = self::getAllTagsByQuestionId($id);
+
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
-            $result['message'], $result['vote_number'], $result['submission_time']);
+            $result['message'], $result['vote_number'], $result['submission_time'], $tags);
         return $question;
     }
 
