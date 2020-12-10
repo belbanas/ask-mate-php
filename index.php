@@ -82,6 +82,10 @@ Route::add('/ask', function () {
     Ask::renderAskQuestion();
 }, 'get');
 
+Route::add('/tags', function () {
+    \app\controllers\TagController::listAllTags();
+}, 'get');
+
 Route::add('/ask', function () {
     Ask::askQuestion();
 }, 'post');
@@ -104,6 +108,11 @@ Route::add('/tagQuestion', function () {
 
 Route::add('/deTag', function () {
     \app\controllers\TagController::deTag();
+}, 'post');
+
+Route::add('/removeTag', function () {
+    $t_id = $_POST["t_id"];
+    \app\controllers\TagController::removeTag($t_id);
 }, 'post');
 
 Route::run('/');

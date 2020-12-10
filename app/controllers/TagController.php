@@ -18,22 +18,27 @@ class TagController
         $model = new Model();
         $model->add_tag_to_question($tagName, $q_id);
 
-        header('Location:/question?id='.$q_id);
+        header('Location:/question?id=' . $q_id);
     }
 
-    public static function deTag(): void
+    public static function removeTag(): void
     {
-        $q_id = $_POST['q_id'];
         $t_id = $_POST['t_id'];
-        echo $q_id;
-        echo $t_id;
+        $model = new Model();
+        $model->removeTag($t_id);
+
+        header('Location:/tags');
+    }
+
+    public static function listAllTags(): void
+    {
 
         $model = new Model();
-        $model->detagQuestion($q_id, $t_id);
+        $tags = $model->display_all_tags();
 
-        header('Location:/question?id='.$q_id);
+        $blade = new Blade('./app/views', './cache');
+        echo $blade->render('tags', ['tags' => $tags]);
     }
-
 
 
 }

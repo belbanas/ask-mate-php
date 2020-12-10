@@ -295,6 +295,34 @@ class Model
     }
 
 
+    public function removeTag($t_id)
+    {
+        // remove connections with questions
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM rel_question_tag
+                    WHERE id_tag = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+
+        // remove tag
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM tag
+                    WHERE id = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
+
     public function edit_question($q_id, $new_title, $new_message): void
     {
         $old_question = $this->display_a_question($q_id);
@@ -394,6 +422,5 @@ class Model
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['questionId' => $questionId, 'idRegisteredUser' => $idRegisteredUser, 'message' => $message]);
     }
-
 
 }
