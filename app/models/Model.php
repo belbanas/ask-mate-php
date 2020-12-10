@@ -346,4 +346,21 @@ class Model
         }
         return $images;
     }
+
+    public function search(string $search): array
+    {
+        $pdo = $this->pdo;
+        $sql = "SELECT * FROM question WHERE title LIKE '%$search%' OR message LIKE '%$search%'";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $searches = array();
+        foreach ($results as $row){
+            $search = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
+                $row['message'], $row['vote_number'], $row['submission_time']);
+            array_push($searches,$search);
+        }
+        return $searches;
+
+    }
 }

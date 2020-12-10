@@ -8,6 +8,7 @@ use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Question;
 use app\controllers\Registration;
+use app\controllers\Search;
 use app\controllers\Users;
 use app\controllers\Vote;
 use app\controllers\Route;
@@ -87,6 +88,15 @@ Route::add('/ask', function () {
 Route::add('/users', function (){
     Users::listAllUsers();
 });
+
+Route::add('/search', function(){
+    Search::renderSearch();
+},"get");
+
+Route::add('/search', function(){
+    Search::findString();
+},"post");
+
 
 Route::run('/');
 
