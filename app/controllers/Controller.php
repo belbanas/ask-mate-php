@@ -13,7 +13,8 @@ class Controller
     {
         $model = new Model();
         $questions = $model->list_questions();
+        $images = $model->getImages();
         $blade = new Blade('./app/views', './cache');
-        echo $blade->render('questions', ['questions' => $questions]);
+        echo $blade->render('questions', ['questions' => $questions, 'images' => $images]);
     }
 }

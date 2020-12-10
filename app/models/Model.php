@@ -18,7 +18,6 @@ class Model
         $this->pdo = DBConnection::connectToDatabase();
     }
 
-
     public function list_questions()
     {
         $pdo = $this->pdo;
@@ -54,20 +53,18 @@ class Model
 
     function ask_question(Question $question): void
     {
-        $id = $question->getId();
         $idImage = $question->getIdImage();
         $idRegisteredUser = $question->getIdRegisteredUser();
         $title = $question->getTitle();
         $message = $question->getMessage();
         $voteNumber = $question->getVoteNumber();
-        $submissionTime = $question->getSubmissionTime();
 
         try {
             $pdo = $this->pdo;
-            $sql = 'INSERT INTO question (id_image, id_registered_user, title, message, vote_number, submission_time)
-                    VALUES (:idImage, :idRegisteredUser, :title, :message, :voteNumber, :submissionTime)';
+            $sql = 'INSERT INTO question (id_image, id_registered_user, title, message, vote_number)
+                    VALUES (:idImage, :idRegisteredUser, :title, :message, :voteNumber)';
             $stmt = $pdo->prepare($sql);
-            $stmt->execute(['idImage' => $idImage, 'idRegisteredUser' => $idRegisteredUser, 'title' => $title, 'message' => $message, 'voteNumber' => $voteNumber, 'submissionTime' => $submissionTime]);
+            $stmt->execute(['idImage' => $idImage, 'idRegisteredUser' => $idRegisteredUser, 'title' => $title, 'message' => $message, 'voteNumber' => $voteNumber]);
 
         } catch (PDOException $e) {
             echo "Error in SQL: " . $e->getMessage();
@@ -186,7 +183,6 @@ class Model
         return $tags;
     }
 
-
     public function display_all_questions_by_tags_name(string $tag_name)
     {
         $pdo = $this->pdo;
@@ -206,7 +202,6 @@ class Model
         return $questions;
     }
 
-
     public function check_if_tag_exists_on_a_question(int $tag_id, int $question_id)
     {
         $pdo = $this->pdo;
@@ -217,7 +212,6 @@ class Model
         $stmt->execute([$question_id, $tag_id]);
         return $stmt->fetch() == null ? false : true;
     }
-
 
     function add_tag_to_question(Tag $tag, Question $question): void
     {
@@ -267,7 +261,6 @@ class Model
         }
     }
 
-
     public function edit_question($q_id, $new_title, $new_message): void
     {
         $old_question = $this->display_a_question($q_id);
@@ -284,7 +277,40 @@ class Model
         }
     }
 
-}
+    public function saveImage(Image $image)
+    {
+        $directory = $image->getDirectory();
+        $fileName = $image->getFileName();
 
-$model = new Model();
-$conn = $model->edit_question(2,'edited','message edited');
+        $pdo = $this->pdo;
+        $sql = 'INSERT INTO image (directory, file_name)
+                VALUES (:directory, :fileName)';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['directory' => $directory, 'fileName' => $fileName]);
+    }
+
+    public function getLastImageId(): int
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT id FROM image ORDER BY id DESC LIMIT 1';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['id'];
+    }
+
+    public function getImages(): array
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM image';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $images = array();
+        foreach ($results as $row) {
+            $image = new Image($row['id'], $row['directory'], $row['file_name'], $row['upload_time']);
+            array_push($images, $image);
+        }
+        return $images;
+    }
+}

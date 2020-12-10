@@ -1,8 +1,12 @@
-@extends('navbar')
+@extends('layout')
 
 @section('title', 'Questions')
 
 @section('content')
+
+    @component('navbar')
+
+    @endcomponent
 
     <div class="container mt-5">
         <table class="table table-striped">
@@ -24,7 +28,9 @@
                     <td scope="row"><a href="/question?id={{ $question->getId() }}">{{ $question->getId() }}</a></td>
                     <td>{{ $question->getTitle() }}</td>
                     <td>{{ $question->getMessage() }}</td>
-                    <td>{{ $question->getIdImage() }}</td>
+                    <td>{{ $question->getIdImage() }}
+
+                    </td>
                     <td>
                         <form action='/increase-question' method='POST' id='increase-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='increase'/>
