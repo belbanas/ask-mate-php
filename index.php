@@ -7,6 +7,7 @@ use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Question;
 use app\controllers\Registration;
+use app\controllers\Users;
 use app\controllers\Vote;
 use app\models\Model;
 use Jenssegers\Blade\Blade;
@@ -75,6 +76,10 @@ Route::add('/edit_question_handler', function () {
     $message = $_POST["message"];
     EditQuestionController::editQuestionHandler($q_id, $title, $message);
 }, 'post');
+
+Route::add('/users', function (){
+    Users::listAllUsers();
+});
 
 Route::run('/');
 

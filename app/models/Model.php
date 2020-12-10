@@ -284,7 +284,31 @@ class Model
         }
     }
 
+    public function listAllUsers(){
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM registered_user ORDER BY id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $users = array();
+        foreach ($result as $row){
+            $answersNumber = $this->countUserQuestions($row['id']);
+            $user = new User($row['id'], $row['email'], $row['password_hash'], $row['registration_time'], $answersNumber);
+            array_push($users,$user);
+        }
+        return $users;
+    }
+
+    public function countUserQuestions(int $id): int{
+        $pdo = $this->pdo;
+        $sql = "SELECT COUNT(*) as count FROM question WHERE id_registered_user = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetch();
+        return $result['count'];
+    }
+
 }
 
-$model = new Model();
-$conn = $model->edit_question(2,'edited','message edited');
+//$model = new Model();
+//$conn = $model->edit_question(2,'edited','message edited');
