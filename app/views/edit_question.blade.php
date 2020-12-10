@@ -9,6 +9,9 @@
     @endcomponent
 
     <div class="container mt-5">
+
+        @if (isset($_SESSION['email']))
+
         <table class="table table-striped">
             <thead>
             <tr>
@@ -37,6 +40,17 @@
 
             </tbody>
         </table>
+
+        @else
+
+            @component('alert')
+
+                <p>You must log in first</p>
+
+            @endcomponent
+
+        @endif
+
     </div>
 
 @endsection
