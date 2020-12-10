@@ -69,6 +69,7 @@
                 </tr>
             </tbody>
         </table>
+        <a href="/add-answer?question_id={{ $question->getId() }}"><button type="button" class="btn btn-primary">Add Answer</button></a>
     </div>
 
     <div class="container mt-5">
