@@ -144,4 +144,14 @@ class Model
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['directory' => $directory, 'fileName' => $fileName]);
     }
+
+    public function getLastImageId(): int
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT id FROM image ORDER BY id DESC LIMIT 1';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetch();
+        return $result['id'];
+    }
 }
