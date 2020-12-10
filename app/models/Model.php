@@ -74,7 +74,7 @@ class Model
         }
     }
 
-    public function display_a_questions_all_answers(int $question_id): Answer
+    public function display_a_questions_all_answers(int $question_id): array
     {
         $pdo = $this->pdo;
         $sql = 'SELECT * FROM question
@@ -82,10 +82,14 @@ class Model
                 WHERE question.id = ?';
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$question_id]);
-        $result = $stmt->fetch();
-
-        return new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
-            $result['vote_number'], $result['submission_time']);
+        $results = $stmt->fetchAll();
+        $answers = array();
+        foreach ($results as $result) {
+            $answer = new Answer($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'],
+                $result['vote_number'], $result['submission_time']);
+            array_push($answers, $answer);
+        }
+        return $answers;
     }
 
     public function display_a_question(int $id): Question
@@ -118,6 +122,14 @@ class Model
         $stmt->execute(['id' => $id]);
     }
 
+    public function deleteAnAnswer(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM answer WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
     public function increaseVote(int $id): void
     {
         $pdo = $this->pdo;
@@ -134,6 +146,31 @@ class Model
         $stmt->execute(['id' => $id]);
     }
 
+    public function increaseAnswerVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE answer SET vote_number = vote_number + 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function decreaseAnswerVote(int $id): void
+    {
+        $pdo = $this->pdo;
+        $sql = 'UPDATE answer SET vote_number = vote_number - 1 WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+    }
+
+    public function getAnswerById(int $id): Answer
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM answer WHERE id=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+        $result = $stmt->fetch();
+        return new Answer ($result['id'], $result['id_question'], $result['id_registered_user'], $result['message'], $result['vote_number'], $result['submission_time']);
+    }
 
     public function display_all_tags()
     {

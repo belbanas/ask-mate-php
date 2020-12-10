@@ -5,6 +5,7 @@ use app\controllers\Controller;
 use app\controllers\EditQuestionController;
 use app\controllers\Delete;
 use app\controllers\Login;
+use app\controllers\Question;
 use app\controllers\Registration;
 use app\controllers\Vote;
 use app\models\Model;
@@ -36,15 +37,28 @@ Route::add('/registration', function () {
 // Post route example
 Route::add('/delete', function () {
     Delete::deleteAQuestion();
+    Delete::deleteAnAnswer();
 }, 'post');
 
-Route::add('/increase', function () {
+Route::add('/increase-question', function () {
     Vote::increaseVote();
 }, 'post');
 
-Route::add('/decrease', function () {
+Route::add('/increase-answer', function () {
+    Vote::increaseAnswerVote();
+}, 'post');
+
+Route::add('/decrease-question', function () {
     Vote::decreaseVote();
 }, 'post');
+
+Route::add('/decrease-answer', function () {
+    Vote::decreaseAnswerVote();
+}, 'post');
+
+Route::add('/question', function () {
+    Question::displayAQuestion();
+},'get');
 
 Route::add('/logout', function () {
     Login::logoutUser();
