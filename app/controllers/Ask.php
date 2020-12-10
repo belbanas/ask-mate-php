@@ -25,13 +25,13 @@ class Ask
         $idRegisteredUser = $user->getId();
         $title = $_POST['title'];
         $message = $_POST['message'];
-        $question = new Question(null, $idImage, $idRegisteredUser, $title, $message, 0, null);
-        $model->ask_question($question);
         if (isset($_FILES['image'])) {
             $image = new Image($_FILES['image']['name']);
             $model->saveImage($image);
             $image->saveImage();
         }
+        $question = new Question(null, $idImage, $idRegisteredUser, $title, $message, 0, null);
+        $model->ask_question($question);
 
 //        header('Location:/');
     }
