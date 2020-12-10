@@ -21,4 +21,17 @@ class TagController
         header('Location:/');
     }
 
+    public static function deTag(): void
+    {
+        $tagName = $_POST['tagName'];
+        $q_id = $_POST['q_id'];
+
+        $model = new Model();
+        $model->add_tag_to_question($tagName, $q_id);
+
+        header('Location:/');
+    }
+
+
+
 }

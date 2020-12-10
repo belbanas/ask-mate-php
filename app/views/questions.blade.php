@@ -61,7 +61,7 @@
                     <td><a href="/edit_question_form?q_id={{ $question->getId() }}">Edit question</a></td>
                     <td>
                         <form action='/tagQuestion' method='POST' id='tag-{{$question->getId()}}'>
-{{--                            <input type='hidden' name='action' value='tag'/>--}}
+                            {{--                            <input type='hidden' name='action' value='tag'/>--}}
                             <input type='hidden' name='q_id' value='{{$question->getId()}}'/>
                             <input type="text" id="tagName" name="tagName">
                             <a href=""
@@ -74,6 +74,11 @@
                                 </svg>
                             </a>
                         </form>
+                        <ul>
+                            @foreach ($question->getTags() as $tag )
+                                <li>{{$tag['name']}}</li>
+                            @endforeach
+                        </ul>
                     </td>
                     <td>
                         <form action='/delete' method='POST' id='delete-{{$question->getId()}}'>

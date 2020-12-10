@@ -26,9 +26,11 @@ class Model
         $stmt->execute();
         $result = $stmt->fetchAll();
         $questions = array();
+
         foreach ($result as $row) {
+            $tags = self::getAllTagsByQuestionId($row['id']);
             $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
-                $row['message'], $row['vote_number'], $row['submission_time']);
+                $row['message'], $row['vote_number'], $row['submission_time'], $tags);
             array_push($questions, $question);
         }
         return $questions;
@@ -262,6 +264,19 @@ class Model
             }
         }
     }
+
+
+    public function getAllTagsByQuestionId(int $q_id)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM tag t
+                JOIN rel_question_tag rqt ON rqt.id_tag = t.id
+                WHERE rqt.id_question = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$q_id]);
+        return $stmt->fetchAll();
+    }
+
 
     public function detagQuestion(int $q_id, int $t_id): void
     {
