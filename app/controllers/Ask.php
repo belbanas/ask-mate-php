@@ -25,8 +25,8 @@ class Ask
         $idImage = null;
         $title = $_POST['title'];
         $message = $_POST['message'];
-        if (isset($_FILES['image'])) {
-            $image = new Image($_FILES['image']['name']);
+        if ($_FILES['image']['name'] != null) {
+            $image = new Image(null, $_FILES['image']['name'], null);
             $model->saveImage($image);
             $image->saveImage();
             $idImage = $model->getLastImageId();

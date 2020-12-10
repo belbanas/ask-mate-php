@@ -13,12 +13,16 @@ class Image
 
     /**
      * Image constructor.
+     * @param int|null $id
      * @param string $filename
+     * @param string|null $uploadTime
      */
-    public function __construct(string $filename)
+    public function __construct(?int $id, string $filename, ?string $uploadTime)
     {
+        $this->id = $id;
         $this->directory = "uploads/";
         $this->filename = $filename;
+        $this->uploadTime = $uploadTime;
     }
 
     public function saveImage()

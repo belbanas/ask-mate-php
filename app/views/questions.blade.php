@@ -27,7 +27,9 @@
                     <th scope="row">{{ $question->getId() }}</th>
                     <td>{{ $question->getTitle() }}</td>
                     <td>{{ $question->getMessage() }}</td>
-                    <td>{{ $question->getIdImage() }}</td>
+                    <td>{{ $question->getIdImage() }}
+
+                    </td>
                     <td>
                         <form action='/increase' method='POST' id='increase-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='increase'/>

@@ -154,4 +154,19 @@ class Model
         $result = $stmt->fetch();
         return $result['id'];
     }
+
+    public function getImages(): array
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM image';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $results = $stmt->fetchAll();
+        $images = array();
+        foreach ($results as $row) {
+            $image = new Image($row['id'], $row['directory'], $row['file_name'], $row['upload_time']);
+            array_push($images, $image);
+        }
+        return $images;
+    }
 }
