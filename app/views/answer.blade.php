@@ -23,8 +23,9 @@
                 <div class="col-sm">
                     <h3>{{ $question->getTitle() }}</h3>
                     <p>{{ $question->getMessage() }}</p>
-                    <form action="/add-answer" method="post" enctype="multipart/form-data">
-                        <label for="question" class="form-label">Answer</label>
+                    <form action="/add-answer" method="post">
+                        <input type="hidden" name="question_id" value="{{ $question->getId() }}">
+                        <label for="message" class="form-label">Answer</label>
                         <div class="input-group mb-3">
                             <textarea id="message" class="form-control" aria-label="With textarea" name="message"
                                       placeholder="Enter your answer" rows="6"></textarea>

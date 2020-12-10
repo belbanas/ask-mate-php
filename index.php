@@ -90,6 +90,10 @@ Route::add('/add-answer', function () {
     AddAnswer::renderAddAnswer();
 }, 'get');
 
+Route::add('/add-answer', function () {
+    AddAnswer::saveAnswer();
+}, 'post');
+
 Route::add('/users', function (){
     Users::listAllUsers();
 });
