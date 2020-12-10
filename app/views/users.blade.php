@@ -24,7 +24,7 @@
                 <td>{{$user->getEmail()}}</td>
                 <td>{{$user->getRegistrationTime()}}</td>
                 <td>{{$user->getNumberOfQuestions()}}</td>
-                <td>0</td>
+                <td>{{$user->getNumberOfAnswers()}}</td>
             </tr>
         @endforeach
         </tbody>

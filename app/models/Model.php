@@ -292,8 +292,9 @@ class Model
         $result = $stmt->fetchAll();
         $users = array();
         foreach ($result as $row){
-            $answersNumber = $this->countUserQuestions($row['id']);
-            $user = new User($row['id'], $row['email'], $row['password_hash'], $row['registration_time'], $answersNumber);
+            $questionsNumber = $this->countUserQuestions($row['id']);
+            $answersNumber = $this->countAnsweredQuestions($row['id']);
+            $user = new User($row['id'], $row['email'], $row['password_hash'], $row['registration_time'], $questionsNumber, $answersNumber);
             array_push($users,$user);
         }
         return $users;
@@ -302,6 +303,15 @@ class Model
     public function countUserQuestions(int $id): int{
         $pdo = $this->pdo;
         $sql = "SELECT COUNT(*) as count FROM question WHERE id_registered_user = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetch();
+        return $result['count'];
+    }
+
+    public function countAnsweredQuestions(int $id): int{
+        $pdo = $this->pdo;
+        $sql = "SELECT COUNT(*) as count FROM answer WHERE id_registered_user = :id";
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id'=>$id]);
         $result = $stmt->fetch();

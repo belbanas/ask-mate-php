@@ -11,6 +11,7 @@ class User
     private ?string $passwordHash;
     private ?string $registrationTime;
     private ?int $numberOfQuestions;
+    private ?int $numberOfAnswers;
 
     /**
      * User constructor.
@@ -19,14 +20,16 @@ class User
      * @param string|null $passwordHash
      * @param string|null $registrationTime
      * @param int|null $numberOfQuestions
+     * @param int|null $numberOfAnswers
      */
-    public function __construct(?int $id, string $email, ?string $passwordHash, ?string $registrationTime, ?int $numberOfQuestions=NULL)
+    public function __construct(?int $id, string $email, ?string $passwordHash, ?string $registrationTime, ?int $numberOfQuestions=NULL, ?int $numberOfAnswers=NULL)
     {
         $this->id = $id;
         $this->email = $email;
         $this->passwordHash = $passwordHash;
         $this->registrationTime = $registrationTime;
         $this->numberOfQuestions = $numberOfQuestions;
+        $this->numberOfAnswers = $numberOfAnswers;
     }
 
     /**
@@ -68,6 +71,16 @@ class User
     {
         return $this->numberOfQuestions;
     }
+
+    /**
+     * @return int|null
+     */
+    public function getNumberOfAnswers(): ?int
+    {
+        return $this->numberOfAnswers;
+    }
+
+
 
 
 }
