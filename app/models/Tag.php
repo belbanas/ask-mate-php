@@ -10,11 +10,11 @@ class Tag
     private string $name;
 
     /**
-     * Tag constructor.
-     * @param int $id
+     * TagController constructor.
+     * @param int|null $id
      * @param string $name
      */
-    public function __construct(int $id, string $name)
+    public function __construct(?int $id, string $name)
     {
         $this->id = $id;
         $this->name = $name;

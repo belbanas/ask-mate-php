@@ -60,7 +60,7 @@ Route::add('/decrease-answer', function () {
 
 Route::add('/question', function () {
     Question::displayAQuestion();
-},'get');
+}, 'get');
 
 Route::add('/logout', function () {
     Login::logoutUser();
@@ -94,9 +94,13 @@ Route::add('/add-answer', function () {
     AddAnswer::saveAnswer();
 }, 'post');
 
-Route::add('/users', function (){
+Route::add('/users', function () {
     Users::listAllUsers();
 });
+
+Route::add('/tagQuestion', function () {
+    \app\controllers\TagController::addTag();
+}, 'post');
 
 Route::run('/');
 

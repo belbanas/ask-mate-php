@@ -202,6 +202,18 @@ class Model
         return $questions;
     }
 
+    public function check_if_tag_exists_return_its_id(string $tagName)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM tag 
+                WHERE name = ?
+                LIMIT 1';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$tagName]);
+        return $stmt->fetch();
+    }
+
+
     public function check_if_tag_exists_on_a_question(int $tag_id, int $question_id)
     {
         $pdo = $this->pdo;
@@ -213,23 +225,31 @@ class Model
         return $stmt->fetch() == null ? false : true;
     }
 
-    function add_tag_to_question(Tag $tag, Question $question): void
+    function add_tag_to_question(string $tagName, int $q_id): void
     {
-        $t_id = $tag->getId();
-        $tag_name = $tag->getName();
+        $t_id = $this->check_if_tag_exists_return_its_id($tagName);
 
-        $q_id = $question->getId();
-        $idImage = $question->getIdImage();
-        $idRegisteredUser = $question->getIdRegisteredUser();
-        $title = $question->getTitle();
-        $message = $question->getMessage();
-        $voteNumber = $question->getVoteNumber();
-        $submissionTime = $question->getSubmissionTime();
+        if ($t_id != null) {
+            $t_id = $t_id['id'];
+        } else {
+            //            CREATE THE TAG
+            try {
+                $pdo = $this->pdo;
+                $sql = 'INSERT INTO tag (name)
+                    VALUES (?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$tagName]);
+                $t_id = $pdo->lastInsertId();
+
+            } catch (PDOException $e) {
+                echo "Error in SQL: " . $e->getMessage();
+            }
+        }
 
         $if_not_exist = $this->check_if_tag_exists_on_a_question($t_id, $q_id);
 
         if (!$if_not_exist) {
-//            TAG QUESTION
+//            CONNECT TAG TO QUESTION
             try {
                 $pdo = $this->pdo;
                 $sql = 'INSERT INTO rel_question_tag (id_question, id_tag)
@@ -240,26 +260,23 @@ class Model
             } catch (PDOException $e) {
                 echo "Error in SQL: " . $e->getMessage();
             }
-        } else {
-//             DETAG THE QUESTION
-            try {
-//                $pdo = $this->pdo;
-//                $sql = 'DELETE FROM tag
-//                    WHERE id = :t_id';
-//                $stmt = $pdo->prepare($sql);
-//                $stmt->execute(['t_id' => $t_id]);
-
-                $pdo = $this->pdo;
-                $sql = 'DELETE FROM rel_question_tag
-                    WHERE id_question = :q_id AND id_tag = :t_id';
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
-
-            } catch (PDOException $e) {
-                echo "Error in SQL: " . $e->getMessage();
-            }
         }
     }
+
+    public function detagQuestion(int $q_id, int $t_id): void
+    {
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM rel_question_tag
+                    WHERE id_question = :q_id AND id_tag = :t_id';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
 
     public function edit_question($q_id, $new_title, $new_message): void
     {
