@@ -78,6 +78,10 @@
             @endforeach
             </tbody>
         </table>
+
+        @if(empty($questions) and isset($itemForSearch))
+            <p>There is no result for <i><b>'{{$itemForSearch}}'</b></i>.</p>
+        @endif
     </div>
 
 @endsection

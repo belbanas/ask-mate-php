@@ -82,12 +82,17 @@ Route::add('/ask', function () {
     Ask::renderAskQuestion();
 }, 'get');
 
+Route::add('/ask', function () {
+    Ask::askQuestion();
+}, 'post');
+
 Route::add('/tags', function () {
     \app\controllers\TagController::listAllTags();
 }, 'get');
 
-Route::add('/ask', function () {
-    Ask::askQuestion();
+Route::add('/doSearch', function () {
+    $itemForSearch = $_POST['itemForSearch'];
+    \app\controllers\SearchController::doSearch($itemForSearch);
 }, 'post');
 
 Route::add('/add-answer', function () {

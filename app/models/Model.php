@@ -423,4 +423,24 @@ class Model
         $stmt->execute(['questionId' => $questionId, 'idRegisteredUser' => $idRegisteredUser, 'message' => $message]);
     }
 
+    public function doSearch($itemForSearch)
+    {
+        $searchThis = '%' . $itemForSearch . '%';
+
+        $pdo = $this->pdo;
+        $sql = "SELECT * FROM question
+        WHERE title LIKE :searchThis OR message LIKE :searchThis";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['searchThis' => $searchThis]);
+        $result = $stmt->fetchAll();
+        $questions = array();
+
+        foreach ($result as $row) {
+            $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
+                $row['message'], $row['vote_number'], $row['submission_time']);
+            array_push($questions, $question);
+        }
+        return $questions;
+    }
+
 }
