@@ -8,10 +8,10 @@ class Question
 {
     private ?int $id;
     private ?int $idImage;
-    private int $idRegisteredUser;
-    private string $title;
-    private string $message;
-    private int $voteNumber;
+    private ?int $idRegisteredUser;
+    private ?string $title;
+    private ?string $message;
+    private ?int $voteNumber;
     private ?string $submissionTime;
 
     /**
@@ -24,7 +24,7 @@ class Question
      * @param int $voteNumber
      * @param string|null $submissionTime
      */
-    public function __construct(?int $id, ?int $idImage, int $idRegisteredUser, string $title, string $message, int $voteNumber, ?string $submissionTime)
+    public function __construct(?int $id, ?int $idImage, ?int $idRegisteredUser, ?string $title, ?string $message, ?int $voteNumber, ?string $submissionTime)
     {
         $this->id = $id;
         $this->idImage = $idImage;

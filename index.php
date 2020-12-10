@@ -8,6 +8,7 @@ use app\controllers\Delete;
 use app\controllers\Login;
 use app\controllers\Question;
 use app\controllers\Registration;
+use app\controllers\Users;
 use app\controllers\Vote;
 use app\controllers\Route;
 
@@ -82,6 +83,10 @@ Route::add('/ask', function () {
 Route::add('/ask', function () {
     Ask::askQuestion();
 }, 'post');
+
+Route::add('/users', function (){
+    Users::listAllUsers();
+});
 
 Route::run('/');
 

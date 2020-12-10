@@ -277,6 +277,30 @@ class Model
         }
     }
 
+    public function listAllUsers(){
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM registered_user ORDER BY id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+        $users = array();
+        foreach ($result as $row){
+            $questionsNumber = $this->countUserQuestions($row['id']);
+            $answersNumber = $this->countAnsweredQuestions($row['id']);
+            $user = new User($row['id'], $row['email'], $row['password_hash'], $row['registration_time'], $questionsNumber, $answersNumber);
+            array_push($users,$user);
+        }
+        return $users;
+    }
+
+    public function countUserQuestions(int $id): int{
+        $pdo = $this->pdo;
+        $sql = "SELECT COUNT(*) as count FROM question WHERE id_registered_user = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetch();
+        return $result['count'];
+    }
     public function saveImage(Image $image)
     {
         $directory = $image->getDirectory();
@@ -287,6 +311,15 @@ class Model
                 VALUES (:directory, :fileName)';
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['directory' => $directory, 'fileName' => $fileName]);
+    }
+
+    public function countAnsweredQuestions(int $id): int{
+        $pdo = $this->pdo;
+        $sql = "SELECT COUNT(*) as count FROM answer WHERE id_registered_user = :id";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id'=>$id]);
+        $result = $stmt->fetch();
+        return $result['count'];
     }
 
     public function getLastImageId(): int

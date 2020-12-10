@@ -15,7 +15,7 @@
                         <a class="nav-link" aria-current="page" href="/">Questions</a>
                         <a class="nav-link" href="/ask">Ask question</a>
                         <a class="nav-link" href="#">Search</a>
-                        <a class="nav-link" href="#">List users</a>
+                        <a class="nav-link" href="/users">List users</a>
                         @if (isset($_SESSION['email']))
                             <a class="nav-link" href="/logout">Logout</a>
                         @else
