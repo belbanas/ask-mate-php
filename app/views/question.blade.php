@@ -1,8 +1,12 @@
-@extends('navbar')
+@extends('layout')
 
 @section('title', 'Question')
 
 @section('content')
+
+    @component('navbar')
+
+    @endcomponent
 
     <div class="container mt-5">
         <table class="table table-striped">
