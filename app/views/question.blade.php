@@ -95,11 +95,11 @@
                     <td scope="row">{{$answer->getId()}}</td>
                     <td>{{ $answer->getMessage() }}</td>
                     <td>
-                        <form action='/increase-answer' method='POST' id='increase-{{$answer->getId()}}'>
+                        <form action='/increase-answer' method='POST' id='increaseAnswer-{{$answer->getId()}}'>
                             <input type='hidden' name='action' value='increase'/>
                             <input type='hidden' name='id' value='{{$answer->getId()}}'/>
                             <a href=""
-                               onclick="document.getElementById('increase-{{$answer->getId()}}').submit(); return false;">
+                               onclick="document.getElementById('increaseAnswer-{{$answer->getId()}}').submit(); return false;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
@@ -107,11 +107,11 @@
                             </a>
                         </form>
                         {{ $answer->getVoteNumber() }}
-                        <form action='/decrease-answer' method='POST' id='decrease-{{$answer->getId()}}'>
+                        <form action='/decrease-answer' method='POST' id='decreaseAnswer-{{$answer->getId()}}'>
                             <input type='hidden' name='action' value='decrease'/>
                             <input type='hidden' name='id' value='{{$answer->getId()}}'/>
                             <a href=""
-                               onclick="document.getElementById('decrease-{{$answer->getId()}}').submit(); return false;">
+                               onclick="document.getElementById('decreaseAnswer-{{$answer->getId()}}').submit(); return false;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>

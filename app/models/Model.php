@@ -118,6 +118,16 @@ class Model
     public function deleteAQuestion(int $id): void
     {
         $pdo = $this->pdo;
+        $sql = 'DELETE FROM answer WHERE id_question=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM rel_question_tag WHERE id_question=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        $pdo = $this->pdo;
         $sql = 'DELETE FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
         $stmt->execute(['id' => $id]);
