@@ -18,20 +18,21 @@
                 <th scope="col">Picture</th>
                 <th scope="col">Vote number</th>
                 <th scope="col">Submission Time</th>
+                <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
             </tr>
             </thead>
             <tbody>
             @foreach ($questions as $question)
                 <tr>
-                    <th scope="row">{{ $question->getId() }}</th>
+                    <td scope="row"><a href="/question?id={{ $question->getId() }}">{{ $question->getId() }}</a></td>
                     <td>{{ $question->getTitle() }}</td>
                     <td>{{ $question->getMessage() }}</td>
                     <td>{{ $question->getIdImage() }}
 
                     </td>
                     <td>
-                        <form action='/increase' method='POST' id='increase-{{$question->getId()}}'>
+                        <form action='/increase-question' method='POST' id='increase-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='increase'/>
                             <input type='hidden' name='id' value='{{$question->getId()}}'/>
                             <a href="" onclick="document.getElementById('increase-{{$question->getId()}}').submit(); return false;">
@@ -42,7 +43,7 @@
                             </a>
                         </form>
                         {{ $question->getVoteNumber() }}
-                        <form action='/decrease' method='POST' id='decrease-{{$question->getId()}}'>
+                        <form action='/decrease-question' method='POST' id='decrease-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='decrease'/>
                             <input type='hidden' name='id' value='{{$question->getId()}}'/>
                             <a href="" onclick="document.getElementById('decrease-{{$question->getId()}}').submit(); return false;">
@@ -54,6 +55,7 @@
                         </form>
                     </td>
                     <td>{{ $question->getSubmissionTime() }}</td>
+                    <td><a href="/edit_question_form?q_id={{ $question->getId() }}">Edit question</a></td>
                     <td>
                         <form action='/delete' method='POST' id='delete-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='delete'/>

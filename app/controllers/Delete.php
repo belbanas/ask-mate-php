@@ -18,4 +18,12 @@ class Delete
         header('Location:/');
     }
 
+    public static function deleteAnAnswer(): void
+    {
+        $answerID = $_POST['id'];
+        $model = new Model();
+        $model->deleteAnAnswer($answerID);
+        header('Location:/');
+    }
+
 }

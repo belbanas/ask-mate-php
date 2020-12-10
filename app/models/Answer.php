@@ -11,7 +11,7 @@ class Answer
     private int $id_registered_user;
     private string $message;
     private string $vote_number;
-    private int $submission_time;
+    private string $submission_time;
 
     /**
      * Question constructor.
@@ -20,7 +20,7 @@ class Answer
      * @param int $id_registered_user
      * @param string $message
      * @param string $vote_number
-     * @param int $submission_time
+     * @param string $submission_time
      */
     public function __construct(int $id, int $id_question, int $id_registered_user, string $message, int $vote_number, string $submission_time)
     {
