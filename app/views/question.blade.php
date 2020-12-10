@@ -32,6 +32,7 @@
                     <form action='/increase-question' method='POST' id='increase-{{$question->getId()}}'>
                         <input type='hidden' name='action' value='increase'/>
                         <input type='hidden' name='id' value='{{$question->getId()}}'/>
+                        <input type='hidden' name='q_id' value='{{$question->getId()}}'/>
                         <a href=""
                            onclick="document.getElementById('increase-{{$question->getId()}}').submit(); return false;">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill"
@@ -44,6 +45,7 @@
                     <form action='/decrease-question' method='POST' id='decrease-{{$question->getId()}}'>
                         <input type='hidden' name='action' value='decrease'/>
                         <input type='hidden' name='id' value='{{$question->getId()}}'/>
+                        <input type='hidden' name='q_id' value='{{$question->getId()}}'/>
                         <a href=""
                            onclick="document.getElementById('decrease-{{$question->getId()}}').submit(); return false;">
                             <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill"

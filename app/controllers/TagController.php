@@ -21,6 +21,16 @@ class TagController
         header('Location:/question?id=' . $q_id);
     }
 
+    public static function deTag(): void
+    {
+        $q_id = $_POST['q_id'];
+        $t_id = $_POST['t_id'];
+        $model = new Model();
+        $model->detagQuestion($q_id, $t_id);
+
+        header('Location:/question?id=' . $q_id);
+    }
+
     public static function removeTag(): void
     {
         $t_id = $_POST['t_id'];
