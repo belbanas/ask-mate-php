@@ -102,5 +102,9 @@ Route::add('/tagQuestion', function () {
     \app\controllers\TagController::addTag();
 }, 'post');
 
+Route::add('/deTag', function () {
+    \app\controllers\TagController::deTag();
+}, 'post');
+
 Route::run('/');
 
