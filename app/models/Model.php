@@ -26,9 +26,11 @@ class Model
         $stmt->execute();
         $result = $stmt->fetchAll();
         $questions = array();
+
         foreach ($result as $row) {
+            $tags = self::getAllTagsByQuestionId($row['id']);
             $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
-                $row['message'], $row['vote_number'], $row['submission_time']);
+                $row['message'], $row['vote_number'], $row['submission_time'], $tags);
             array_push($questions, $question);
         }
         return $questions;
@@ -97,8 +99,10 @@ class Model
         $stmt->execute(['id' => $id]);
         $result = $stmt->fetch();
 
+        $tags = self::getAllTagsByQuestionId($id);
+
         $question = new Question($result['id'], $result['id_image'], $result['id_registered_user'], $result['title'],
-            $result['message'], $result['vote_number'], $result['submission_time']);
+            $result['message'], $result['vote_number'], $result['submission_time'], $tags);
         return $question;
     }
 
@@ -113,6 +117,16 @@ class Model
 
     public function deleteAQuestion(int $id): void
     {
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM answer WHERE id_question=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
+        $pdo = $this->pdo;
+        $sql = 'DELETE FROM rel_question_tag WHERE id_question=:id';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['id' => $id]);
+
         $pdo = $this->pdo;
         $sql = 'DELETE FROM question WHERE id=:id';
         $stmt = $pdo->prepare($sql);
@@ -202,6 +216,18 @@ class Model
         return $questions;
     }
 
+    public function check_if_tag_exists_return_its_id(string $tagName)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM tag 
+                WHERE name = ?
+                LIMIT 1';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$tagName]);
+        return $stmt->fetch();
+    }
+
+
     public function check_if_tag_exists_on_a_question(int $tag_id, int $question_id)
     {
         $pdo = $this->pdo;
@@ -213,23 +239,31 @@ class Model
         return $stmt->fetch() == null ? false : true;
     }
 
-    function add_tag_to_question(Tag $tag, Question $question): void
+    function add_tag_to_question(string $tagName, int $q_id): void
     {
-        $t_id = $tag->getId();
-        $tag_name = $tag->getName();
+        $t_id = $this->check_if_tag_exists_return_its_id($tagName);
 
-        $q_id = $question->getId();
-        $idImage = $question->getIdImage();
-        $idRegisteredUser = $question->getIdRegisteredUser();
-        $title = $question->getTitle();
-        $message = $question->getMessage();
-        $voteNumber = $question->getVoteNumber();
-        $submissionTime = $question->getSubmissionTime();
+        if ($t_id != null) {
+            $t_id = $t_id['id'];
+        } else {
+            //            CREATE THE TAG
+            try {
+                $pdo = $this->pdo;
+                $sql = 'INSERT INTO tag (name)
+                    VALUES (?)';
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([$tagName]);
+                $t_id = $pdo->lastInsertId();
+
+            } catch (PDOException $e) {
+                echo "Error in SQL: " . $e->getMessage();
+            }
+        }
 
         $if_not_exist = $this->check_if_tag_exists_on_a_question($t_id, $q_id);
 
         if (!$if_not_exist) {
-//            TAG QUESTION
+//            CONNECT TAG TO QUESTION
             try {
                 $pdo = $this->pdo;
                 $sql = 'INSERT INTO rel_question_tag (id_question, id_tag)
@@ -240,26 +274,64 @@ class Model
             } catch (PDOException $e) {
                 echo "Error in SQL: " . $e->getMessage();
             }
-        } else {
-//             DETAG THE QUESTION
-            try {
-//                $pdo = $this->pdo;
-//                $sql = 'DELETE FROM tag
-//                    WHERE id = :t_id';
-//                $stmt = $pdo->prepare($sql);
-//                $stmt->execute(['t_id' => $t_id]);
-
-                $pdo = $this->pdo;
-                $sql = 'DELETE FROM rel_question_tag
-                    WHERE id_question = :q_id AND id_tag = :t_id';
-                $stmt = $pdo->prepare($sql);
-                $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
-
-            } catch (PDOException $e) {
-                echo "Error in SQL: " . $e->getMessage();
-            }
         }
     }
+
+
+    public function getAllTagsByQuestionId(int $q_id)
+    {
+        $pdo = $this->pdo;
+        $sql = 'SELECT * FROM tag t
+                JOIN rel_question_tag rqt ON rqt.id_tag = t.id
+                WHERE rqt.id_question = ?';
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute([$q_id]);
+        return $stmt->fetchAll();
+    }
+
+
+    public function detagQuestion(int $q_id, int $t_id): void
+    {
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM rel_question_tag
+                    WHERE id_question = :q_id AND id_tag = :t_id';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(['q_id' => $q_id, 't_id' => $t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
+
+    public function removeTag($t_id)
+    {
+        // remove connections with questions
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM rel_question_tag
+                    WHERE id_tag = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+
+        // remove tag
+        try {
+            $pdo = $this->pdo;
+            $sql = 'DELETE FROM tag
+                    WHERE id = ?';
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute([$t_id]);
+
+        } catch (PDOException $e) {
+            echo "Error in SQL: " . $e->getMessage();
+        }
+    }
+
 
     public function edit_question($q_id, $new_title, $new_message): void
     {
@@ -361,5 +433,24 @@ class Model
         $stmt->execute(['questionId' => $questionId, 'idRegisteredUser' => $idRegisteredUser, 'message' => $message]);
     }
 
+    public function doSearch($itemForSearch)
+    {
+        $searchThis = '%' . $itemForSearch . '%';
+
+        $pdo = $this->pdo;
+        $sql = "SELECT * FROM question
+        WHERE title LIKE :searchThis OR message LIKE :searchThis";
+        $stmt = $pdo->prepare($sql);
+        $stmt->execute(['searchThis' => $searchThis]);
+        $result = $stmt->fetchAll();
+        $questions = array();
+
+        foreach ($result as $row) {
+            $question = new Question($row['id'], $row['id_image'], $row['id_registered_user'], $row['title'],
+                $row['message'], $row['vote_number'], $row['submission_time']);
+            array_push($questions, $question);
+        }
+        return $questions;
+    }
 
 }

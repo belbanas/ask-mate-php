@@ -13,7 +13,12 @@ class Vote
         $questionID = $_POST['id'];
         $model = new Model();
         $model->increaseVote($questionID);
-        header('Location:/');
+
+        if (isset($_POST['q_id'])) {
+            header('Location:/question?id=' . $_POST['q_id']);
+        } else {
+            header('Location:/');
+        }
     }
 
     public static function decreaseVote(): void
@@ -21,7 +26,12 @@ class Vote
         $questionID = $_POST['id'];
         $model = new Model();
         $model->decreaseVote($questionID);
-        header('Location:/');
+
+        if (isset($_POST['q_id'])) {
+            header('Location:/question?id=' . $_POST['q_id']);
+        } else {
+            header('Location:/');
+        }
     }
 
     public static function increaseAnswerVote(): void
@@ -31,7 +41,7 @@ class Vote
         $model->increaseAnswerVote($answerID);
         $answer = $model->getAnswerById($answerID);
         $questionID = $answer->getIdQuestion();
-        header('Location:/question?id='. $questionID);
+        header('Location:/question?id=' . $questionID);
     }
 
     public static function decreaseAnswerVote(): void
@@ -41,9 +51,8 @@ class Vote
         $model->decreaseAnswerVote($answerID);
         $answer = $model->getAnswerById($answerID);
         $questionID = $answer->getIdQuestion();
-        header('Location:/question?id='. $questionID);
+        header('Location:/question?id=' . $questionID);
     }
-
 
 
 }

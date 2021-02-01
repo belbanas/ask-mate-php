@@ -35,7 +35,8 @@
                         <form action='/increase-question' method='POST' id='increase-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='increase'/>
                             <input type='hidden' name='id' value='{{$question->getId()}}'/>
-                            <a href="" onclick="document.getElementById('increase-{{$question->getId()}}').submit(); return false;">
+                            <a href=""
+                               onclick="document.getElementById('increase-{{$question->getId()}}').submit(); return false;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-up-fill"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.247 4.86l-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z"/>
@@ -46,7 +47,8 @@
                         <form action='/decrease-question' method='POST' id='decrease-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='decrease'/>
                             <input type='hidden' name='id' value='{{$question->getId()}}'/>
-                            <a href="" onclick="document.getElementById('decrease-{{$question->getId()}}').submit(); return false;">
+                            <a href=""
+                               onclick="document.getElementById('decrease-{{$question->getId()}}').submit(); return false;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-caret-down-fill"
                                      fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
@@ -60,7 +62,8 @@
                         <form action='/delete' method='POST' id='delete-{{$question->getId()}}'>
                             <input type='hidden' name='action' value='delete'/>
                             <input type='hidden' name='id' value='{{$question->getId()}}'/>
-                            <a href="" onclick="document.getElementById('delete-{{$question->getId()}}').submit(); return false;">
+                            <a href=""
+                               onclick="document.getElementById('delete-{{$question->getId()}}').submit(); return false;">
                                 <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-trash-fill"
                                      fill="currentColor"
                                      xmlns="http://www.w3.org/2000/svg">
@@ -75,6 +78,10 @@
             @endforeach
             </tbody>
         </table>
+
+        @if(empty($questions) and isset($itemForSearch))
+            <p>There is no result for <i><b>'{{$itemForSearch}}'</b></i>.</p>
+        @endif
     </div>
 
 @endsection

@@ -5,7 +5,7 @@ namespace app\controllers;
 class Route
 {
 
-    private static $routes = array();
+    private static array $routes = array();
     private static $pathNotFound = null;
     private static $methodNotAllowed = null;
 

@@ -60,7 +60,7 @@ Route::add('/decrease-answer', function () {
 
 Route::add('/question', function () {
     Question::displayAQuestion();
-},'get');
+}, 'get');
 
 Route::add('/logout', function () {
     Login::logoutUser();
@@ -86,6 +86,15 @@ Route::add('/ask', function () {
     Ask::askQuestion();
 }, 'post');
 
+Route::add('/tags', function () {
+    \app\controllers\TagController::listAllTags();
+}, 'get');
+
+Route::add('/doSearch', function () {
+    $itemForSearch = $_POST['itemForSearch'];
+    \app\controllers\SearchController::doSearch($itemForSearch);
+}, 'post');
+
 Route::add('/add-answer', function () {
     AddAnswer::renderAddAnswer();
 }, 'get');
@@ -94,9 +103,22 @@ Route::add('/add-answer', function () {
     AddAnswer::saveAnswer();
 }, 'post');
 
-Route::add('/users', function (){
+Route::add('/users', function () {
     Users::listAllUsers();
 });
+
+Route::add('/tagQuestion', function () {
+    \app\controllers\TagController::addTag();
+}, 'post');
+
+Route::add('/deTag', function () {
+    \app\controllers\TagController::deTag();
+}, 'post');
+
+Route::add('/removeTag', function () {
+    $t_id = $_POST["t_id"];
+    \app\controllers\TagController::removeTag($t_id);
+}, 'post');
 
 Route::run('/');
 

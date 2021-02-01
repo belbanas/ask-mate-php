@@ -13,18 +13,20 @@ class Question
     private ?string $message;
     private ?int $voteNumber;
     private ?string $submissionTime;
+    private ?array $tags;
 
     /**
      * Question constructor.
      * @param int|null $id
      * @param int|null $idImage
-     * @param int $idRegisteredUser
-     * @param string $title
-     * @param string $message
-     * @param int $voteNumber
+     * @param int|null $idRegisteredUser
+     * @param string|null $title
+     * @param string|null $message
+     * @param int|null $voteNumber
      * @param string|null $submissionTime
+     * @param null $
      */
-    public function __construct(?int $id, ?int $idImage, ?int $idRegisteredUser, ?string $title, ?string $message, ?int $voteNumber, ?string $submissionTime)
+    public function __construct(?int $id, ?int $idImage, ?int $idRegisteredUser, ?string $title, ?string $message, ?int $voteNumber, ?string $submissionTime, ?array $tags = [])
     {
         $this->id = $id;
         $this->idImage = $idImage;
@@ -33,6 +35,7 @@ class Question
         $this->message = $message;
         $this->voteNumber = $voteNumber;
         $this->submissionTime = $submissionTime;
+        $this->tags = $tags;
     }
 
     /**
@@ -83,6 +86,7 @@ class Question
         return $this->voteNumber;
     }
 
+
     /**
      * @return string
      */
@@ -92,6 +96,11 @@ class Question
     }
 
 
-
-
+    /**
+     * @return array|null
+     */
+    public function getTags(): ?array
+    {
+        return $this->tags;
+    }
 }
